@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserControler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/user', [UserControler::class, 'store'])->name('user.store');
 
-//Route::middleware('auth')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::get('/users', [UserControler::class, 'index'])->name('users.index');
-    Route::post('/user', [UserControler::class, 'store'])->name('user.store');
     Route::get('/user/{id}', [UserControler::class, 'show'])->name('user.show');
     Route::put('/user/{id}', [UserControler::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserControler::class, 'destroy'])->name('user.destroy');
-//});
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
+});

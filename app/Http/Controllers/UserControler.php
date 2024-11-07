@@ -11,8 +11,18 @@ use Illuminate\Support\Str;
 class UserControler extends Controller
 {
     /**
-     * Display a listing of the resource.
-     * 
+     * Listado de usuarios
+     * Metodo: GET
+     * Url: http://test-dev.test/api/users
+     * Parámetros: Ninguna
+     * Respuesta en formato JSON
+     *      Sino existe usuarios:
+     *          state: 404
+     *          menssage: 'There are no users'
+     *      Si existe usuarios:
+     *          state: 200
+     *          menssage: 'Users list'
+     *          users: Lista de usuarios en formato JSON
      */
     public function index()
     {
@@ -32,7 +42,31 @@ class UserControler extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Registro de nuevo usuario
+     * Metodo: POST
+     * Url: http://test-dev.test/api/user
+     * Parámetros en formato: JSON
+     *      {
+     *           "first_name": "Juan",
+     *           "last_name": "Perez",
+     *           "email": "juan.perez@gmail.com",
+     *           "password": "juanp",
+     *           "address": "Calle Z nro. 123",
+     *           "phone": "72030405",
+     *           "phone_2": "0",
+     *           "postal_code": "abc-123",
+     *           "birth_date": "2000-01-01",
+     *           "gender": "F"
+     *       }
+     * Respuesta en formato JSON
+     *      Si existe errores de validacion:
+     *          state: 400
+     *          menssage: 'User not created'
+     *          errors: Lista errores de validación
+     *      Si se registra el usuario:
+     *          state: 200
+     *          menssage: 'User created'
+     *          user: Datos del usuario en formato JSON
      */
     public function store(Request $request)
     {
@@ -73,12 +107,24 @@ class UserControler extends Controller
         return response()->json([
             'state' => true,
             'message' => 'User created',
-            'users' => $usuario,
+            'user' => $usuario,
         ], 200);
     }
 
     /**
-     * Display the specified resource.
+     * Detalle de un usuario
+     * Metodo: GET
+     * Url: http://test-dev.test/api/user/{id}
+     * Parámetros: 
+     *      Por URL pasar el {id} del usuario
+     * Respuesta en formato JSON
+     *      Sino existe usuario:
+     *          state: 404
+     *          menssage: 'User not found'
+     *      Si existe usuario:
+     *          state: 200
+     *          menssage: 'Users found'
+     *          users: Datos del usuario en formato JSON
      */
     public function show($id)
     {
@@ -99,7 +145,36 @@ class UserControler extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualización de datos de un usuario
+     * Metodo: PUT
+     * Url: http://test-dev.test/api/user/{id}
+     * Parámetros:
+     *      Por URL pasar el {id} del usuario
+     *      en formato: JSON
+     *      {
+     *           "first_name": "Juan 2",
+     *           "last_name": "Perez 2",
+     *           "email": "juan.perez@gmail.com",
+     *           "password": "juanp",
+     *           "address": "Calle Z nro. 123",
+     *           "phone": "72030405",
+     *           "phone_2": "0",
+     *           "postal_code": "abc-123",
+     *           "birth_date": "2000-01-01",
+     *           "gender": "F"
+     *       }
+     * Respuesta en formato JSON
+     *      Sino existe usuario:
+     *          state: 404
+     *          menssage: 'User not found'
+     *      Si existe errores de validacion:
+     *          state: 400
+     *          menssage: 'User not updated'
+     *          errors: Lista errores de validación
+     *      Si se actualiza el usuario:
+     *          state: 200
+     *          menssage: 'User updated'
+     *          user: Datos del usuario en formato JSON
      */
     public function update(Request $request, $id)
     {
@@ -153,7 +228,18 @@ class UserControler extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminación lógica de un usuario
+     * Metodo: DELETE
+     * Url: http://test-dev.test/api/user/{id}
+     * Parámetros: 
+     *      Por URL pasar el {id} del usuario
+     * Respuesta en formato JSON
+     *      Sino existe usuario:
+     *          state: 404
+     *          menssage: 'User not found'
+     *      Si existe usuario:
+     *          state: 200
+     *          menssage: 'Users deleted'
      */
     public function destroy($id)
     {
